@@ -1,0 +1,36 @@
+version: "1"
+
+package:
+  id: io.github.Cliphist2
+  name: Cliphist2
+  version: 1.1.0.1
+  kind: app
+  description: |
+    A clipboard history application
+
+command:
+  - /opt/apps/io.github.Cliphist2/files/bin/cliphist2
+
+base: org.deepin.foundation/23.0.0
+runtime: org.deepin.Runtime/23.0.1
+
+sources:
+  - kind: git
+    url: https://github.com/mneuroth/Cliphist2.git
+    version: master
+    commit: 5439942990a08343f856c828a48831fc7bc0674a
+  - kind: file
+    url: http://ftp.cn.debian.org/debian/pool/main/x/xcb-util-keysyms/libxcb-keysyms1-dev_0.4.0-1+b2_amd64.deb
+    digest: ea00c08dbf0a3f129d61db8a10adf701fc976c47d92f27b1331eb0229f2def87
+  - kind: file
+    url: http://ftp.cn.debian.org/debian/pool/main/x/xcb-util-keysyms/libxcb-keysyms1_0.4.0-1+b2_amd64.deb
+    digest: aed1436db9a3e63b10d00c4ed16248b5c82b5dd2963a83a761f406af65eb4b49
+build: |
+  bash ./install_dep linglong/sources $PREFIX
+
+  cd /project/linglong/sources/Cliphist2.git
+  git apply --reject --whitespace=fix ../../../0001-install.patch
+  cd src
+  qmake -makefile PREFIX=${PREFIX} LIB_INSTALL_DIR=${PREFIX}/lib/${TRIPLET}
+  make -j$(nproc)
+  make install
