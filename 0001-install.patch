@@ -1,0 +1,54 @@
+From 199b2eb908a8ca9b884ed07eec75c0ba1b97ac1e Mon Sep 17 00:00:00 2001
+From: wjyrich <1071633242@qq.com>
+Date: Tue, 20 Aug 2024 19:21:31 +0800
+Subject: [PATCH] install
+
+---
+ src/cliphist2.pro | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
+diff --git a/src/cliphist2.pro b/src/cliphist2.pro
+index fea3a2b..c357f54 100644
+--- a/src/cliphist2.pro
++++ b/src/cliphist2.pro
+@@ -9,7 +9,7 @@ win32:RC_FILE = cliphist2.rc
+ win32:QMAKE_LFLAGS += -static-libgcc # remove dependency to libgcc_s_dw2-1.dll
+ 
+ CONFIG += c++11
+-
++INCLUDEPATH += $$PREFIX/include
+ # see: https://github.com/falceeffect/UGlobalHotkey
+ include(../UGlobalHotkey-master/uglobalhotkey.pri)
+ 
+@@ -33,10 +33,9 @@ TRANSLATIONS = cliphist2_de.ts \
+     cliphist2_nl.ts 
+ #\
+ #    qt_de.qm
+-unix:!macx { 
+-    isEmpty( PREFIX ):PREFIX = /usr
+-    isEmpty( DESKTOPDIR ):DESKTOPDIR = /usr/share/applications
+-    isEmpty( ICONDIR ):ICONDIR = /usr/share/pixmaps
++unix:!macx {X
++    isEmpty( DESKTOPDIR ):DESKTOPDIR = $$PREFIX/share/applications
++    isEmpty( ICONDIR ):ICONDIR = $$PREFIX/share/pixmaps
+     DEFINES += PREFIX=\\\"$${PREFIX}\\\"
+     target.path = $${PREFIX}/bin
+     INSTALLS += target
+@@ -47,11 +46,13 @@ unix:!macx {
+ #        qt_de.qm
+     INSTALLS += language
+     desktop.path = $${DESKTOPDIR}
+-    desktop.files = cliphist2.desktop
++    desktop.files = ../cliphist2.desktop
+     INSTALLS += desktop
+     icon.path = $${ICONDIR}
+     icon.files = cliphist2_512x512.png
+     INSTALLS += icon
++    clp.path = $${PREFIX}/bin
++    clp.files = ../cliphist2.clp
+ }
+ 
+ # images.path += /usr/share/cliphist2
+-- 
+2.43.4
+
